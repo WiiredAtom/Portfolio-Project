@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daniel Adebayo | Portfolio</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        /* Original Blue/Dark Slate Theme */
+        --bg-dark: #0f172a;
+        --bg-card: #1e293b;
+        --text-light: #f1f5f9;
+        --text-gray: #94a3b8;
+        --text-green: #10b981;
+        --accent-blue: #38bdf8; /* Sky Blue */
+        --accent-green: #00c950;
+        --accent-hover: #059669;
+        --border-color: rgba(255, 255, 255, 0.1);
+
+        /* Tech Colors */
+        --html-color: #e34c26;
+        --css-color: #264de4;
+        --js-color: #f0db4f;
+        --react-color: #61dbfb;
+        --ts-color: #3178c6;
+        --tailwind-color: #38bdf8;
+        --git-color: #f05032;
+      }
+
+      /* --- OPTION 1: SMOOTH SCROLLING --- */
+      html {
+        scroll-behavior: smooth;
+      }
+      /* ---------------------------------------- */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: var(--bg-dark);
+        color: var(--text-light);
+        font-family: "Space Mono", serif; /* Keeping your font change */
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: 0.3s;
+      }
+      ul {
+        list-style: none;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* --- NAVIGATION --- */
+      header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        z-index: 1000;
+        padding: 0 20px;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 50px; /* User changed to 50px (Slimmer header) */
+      }
+
+      .logo {
+        font-weight: 500;
+        font-size: 1.2rem;
+        color: var(--accent-green);
+        z-index: 1001;
+      }
+
+      .logo span {
+        color: var(--accent-green);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-links a {
+        color: var(--text-gray);
+        font-size: 0.9rem;
+        font-weight: 500;
+
+        /* REQUIRED FOR THE UNDERLINE ANIMATION */
+        position: relative;
+        display: inline-block;
+      }
+
+      /* THE ANIMATED BLUE UNDERLINE */
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 2px; /* Thickness of line */
+        bottom: -4px; /* Position it slightly below text */
+        left: 0;
+        background-color: var(--accent-green); /* Same Blue */
+
+        /* START STATE: Invisible (Width scaled to 0) */
+        transform: scaleX(0);
+        transform-origin: left; /* Grow from left to right */
+        transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth movement */
+      }
+
+      /* HOVER STATE */
+      .nav-links a:hover {
+        color: var(--accent-green); /* Text becomes blue */
+      }
+
+      /* END STATE: Visible (Width scaled to 1) */
+      .nav-links a:hover::after {
+        transform: scaleX(1);
+      }
+
+      /* Mobile Hamburger Button */
+      .mobile-menu-btn {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 25px;
+        height: 15px;
+        cursor: pointer;
+        z-index: 1002;
+      }
+
+      .mobile-menu-btn span {
+        display: block;
+        width: 100%;
+        height: 1.5px;
+        background-color: var(--accent-green);
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* --- MOBILE NAV OVERLAY --- */
+      .mobile-nav-overlay {
+        position: fixed;
+        top: 102px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh-50px);
+        padding: 20px;
+        background: rgba(15, 23, 42, 0.45);
+        z-index: 2000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .mobile-nav-overlay.active {
+        transform: translateX(0);
+      }
+
+      .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+
+      .mobile-nav-links a {
+        color: var(--text-light);
+        font-size: 1.0rem;
+        font-weight: 400;
+      }
+      /* State 1: When the menu is open, rotate the Top Line */
+      #menuBtn.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      /* State 2: When the menu is open, hide the Middle Line */
+      #menuBtn.open span:nth-child(2) {
+      opacity: 0;
+      }
+
+      /* State 3: When the menu is open, rotate the Bottom Line */
+      #menuBtn.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+      }
+
+      /* --- ANIMATIONS --- */
+      @keyframes smoothBounce {
+        0%,
+        100% {
+          animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+          transform: translateY(-25%);
+        }
+        50% {
+          animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+          transform: none;
+        }
+      }
+
+      /* --- NEW BLINK CURSOR ANIMATION --- */
+      @keyframes blinkCursor {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+      /* --------------------------------------- */
+
+      /* --- HERO SECTION --- */
+      .hero {
+        padding-top: 140px;
+        padding-bottom: 60px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(to bottom, #1e293b 0%, #0f172a 100%);
+      }
+
+      /* --- LIGHT BLUE SPLOTCHES (HERO) --- */
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -10%;
+        right: -5%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          var(--accent-green) 15%,
+          transparent 70%
+        ); /* User changed to 15% */
+        filter: blur(80px);
+        animation: pulseSplotch 2.5s infinite ease-in-out; /* User changed to 2.5s */
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        bottom: -10%;
+        left: -5%;
+        width: 450px;
+        height: 450px;
+        background: radial-gradient(
+          circle,
+          var(--accent-green) 15%,
+          transparent 70%
+        ); /* User changed to 15% */
+        filter: blur(70px);
+        animation: pulseSplotch 2.5s infinite ease-in-out; /* User changed to 2.5s */
+        z-index: 1;
+        pointer-events: none;
+      }
+      /* ------------------------------ */
+
+      .avatar-container {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 24px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid var(--accent-green); /* User changed to 4px */
+        box-shadow: 0 0 0px rgba(56, 189, 248, 0.3);
+        animation: smoothBounce 1s ease-in-out infinite; /* Keeping your speed */
+        position: relative;
+        z-index: 10;
+      }
+
+      .avatar-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .hero h1 {
+        font-size: 4.5rem;
+        font-weight: 800;
+        margin-bottom: 16px;
+        line-height: 1.2;
+        position: relative;
+        z-index: 10;
+        white-space: nowrap; /* Prevents cursor dropping to new line on wrap */
+      }
+
+      /* UPDATED: Typing Cursor Style */
+      .typing-cursor {
+        display: inline-block;
+        width: 8px;
+        height: 1em; /* Same height as text font size approx */
+        background-color: var(--text-light); /* Changed to White */
+        vertical-align: middle;
+        margin-left: 12px; /* User changed to 3px */
+        border-radius: 0px;
+        /* Blink Animation applied */
+        animation: blinkCursor 1.5s step-end infinite; /* User changed to 1.5s */
+      }
+
+      .hero p {
+        color: var(--text-gray);
+        font-size: 1.1rem;
+        max-width: 800px;
+        margin: 0 auto 32px;
+        position: relative;
+        z-index: 10;
+      }
+
+      .hero-btns {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        position: relative;
+        z-index: 10;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 32px;
+        border-radius: 8px;
+        font-weight: 400;
+        cursor: pointer;
+        border: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary {
+        background-color: var(--accent-green);
+        color: var(--bg-dark);
+      }
+      .btn-primary:hover {
+        background-color: var(--accent-green);
+        transform: scale(1.05);
+      }
+
+      .btn-outline {
+        background-color: transparent;
+        border: 1px solid var(--text-gray);
+        color: var(--text-light);
+      }
+      .btn-outline:hover {
+        background-color: var(--accent-green);
+        border-color: var(--accent-green);
+        color: var(--bg-dark);
+        transform: scale(1.05);
+      }
+
+      /* --- TECH STACK --- */
+      .tech-stack {
+        padding: 60px 0;
+        background: linear-gradient(to bottom, #131d2e 0%, #0f172a 100%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* --- LIGHT BLUE SPLOTCHES (TECH STACK) --- */
+      .tech-stack::before {
+        content: "";
+        position: absolute;
+        top: -10%;
+        right: -5%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          var(--accent-green) 15%,
+          transparent 70%
+        ); /* User changed to 15% */
+        filter: blur(70px);
+        animation: pulseSplotch 2.5s infinite ease-in-out; /* User changed to 2.5s */
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .tech-stack::after {
+        content: "";
+        position: absolute;
+        bottom: -10%; /* Note: I noticed bottom/10% in your prompt, kept it as is */
+        left: -5%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          var(--accent-green) 15%,
+          transparent 70%
+        ); /* User changed to 15% */
+        filter: blur(70px);
+        animation: pulseSplotch 2.5s infinite ease-in-out; /* User changed to 2.5s */
+        z-index: 0;
+        pointer-events: none;
+      }
+      /* ------------------------------ */
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+        z-index: 10;
+      }
+      .section-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+      }
+      .section-header span {
+        color: var(--accent-green);
+      }
+
+      .tech-grid {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 24px;
+        position: relative;
+        z-index: 10;
+      }
+
+      .tech-card {
+        /* Changed to RGBA with 0.35 opacity (35%) to be see-through */
+        /* We used rgba(30, 41, 59, 0.35) which is the RGB for --bg-card (#1e293b) */
+        background: rgba(30, 41, 59, 0.35);
+
+        border: 0px solid var(--border-color); /* User changed to 0px */
+        padding: 20px 30px;
+        border-radius: 14px; /* User changed to 14px */
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        min-width: 120px; /* Ensure rectangle shape */
+        transition: transform 0.3s, filter 0.3s, background 0.3s; /* Added transition for smooth changes */
+
+        flex: 1 1 calc(50% - 12px);
+        max-width: 260px; /* Enforced width to ensure rectangles */
+        will-change: transform, opacity;
+      }
+
+      /* Hover State for Revealed Cards */
+      /* We use specificity so this only applies after .active is added */
+      .tech-card.reveal.active:hover {
+        /* User Code: Lift slightly higher */
+        transform: translateY(-1px) scale(1.05);
+
+        /* User Code: Brighten the card */
+        filter: brightness(1.5);
+
+        /* Fixed border-color to Blue */
+        border-color: var(--accent-green);
+      }
+
+      .tech-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tech-name {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-gray);
+      }
+
+      .icon-html {
+        color: var(--html-color);
+      }
+      .icon-css {
+        color: var(--css-color);
+      }
+      .icon-js {
+        color: var(--js-color);
+      }
+      .icon-react {
+        color: var(--react-color);
+      }
+      .icon-ts {
+        color: var(--ts-color);
+      }
+      .icon-tailwind {
+        color: var(--tailwind-color);
+      }
+      .icon-git {
+        color: var(--git-color);
+      }
+
+      /* --- PROJECTS --- */
+      .projects {
+        padding: 60px 0;
+        background: linear-gradient(to bottom, #182136 0%, #0f172a 100%);
+      }
+      .project-row {
+        display: flex;
+        flex-direction: column;
+      }
+      .project-row-container {
+        display: flex;
+        align-items: flex-start;
+        gap: 60px;
+        margin-bottom: 100px;
+        /* Reveal Prep */
+        will-change: transform, opacity;
+      }
+      .project-row-container.reverse {
+        flex-direction: row-reverse;
+      }
+      .project-content {
+        flex: 1;
+      }
+      .project-visual {
+        flex: 1;
+      }
+      .project-title {
+        font-size: 2rem;
+        color: var(--accent-green);
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .project-desc {
+        color: var(--text-gray);
+        margin-bottom: 20px;
+        font-size: 1rem;
+      }
+
+      .tech-list {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+      }
+      .tech-pill {
+        font-size: 0.8rem;
+        font-family: Space Mono;
+        color: var(--accent-green);
+        border: 1px solid var(--accent-green);
+        padding: 4px 10px;
+        border-radius: 5px;
+      }
+
+      .features-list {
+        margin-bottom: 24px;
+        padding-left: 20px;
+      }
+      .features-list li {
+        list-style-type: disc;
+        color: var(--text-gray);
+        margin-bottom: 6px;
+      }
+      .features-list li::marker {
+        color: var(--accent-green);
+      }
+      .project-actions {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .project-img-wrapper {
+        background: var(--bg-card);
+        border-radius: 12px;
+        overflow: hidden;
+        border: 2px solid var(--accent-green);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        position: relative;
+      }
+
+      /* --- OPTION 2: SCROLL REVEAL ANIMATIONS --- */
+      @keyframes pulseSplotch {
+        0%,
+        100% {
+          opacity: 0.25; /* Dim state */
+        }
+        50% {
+          opacity: 0.6; /* Bright state */
+        }
+      }
+
+      .reveal {
+        position: relative;
+        opacity: 0; /* Start hidden */
+        transform: translateY(50px); /* Start shifted down */
+        transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); /* Smooth transition */
+      }
+
+      .reveal.active {
+        opacity: 1; /* Fade in */
+        transform: translateY(0); /* Move up to natural position */
+      }
+      /* ------------------------------------------------ */
+
+      /* --- FOOTER --- */
+      footer {
+        background: #020617;
+        padding: 30px 0 15px;
+        border-top: 1px solid var(--border-color);
+        text-align: center;
+      }
+
+      .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 15px;
+      }
+
+      .social-icon {
+        color: var(--text-gray);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+      }
+
+      .social-icon:hover {
+        background: var(--accent-green);
+        color: var(--bg-dark);
+        border-color: var(--accent-green);
+      }
+
+      .copyright {
+        color: var(--text-gray);
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+      }
+      .footer-nav {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        padding-top: 15px;
+        border-top: 1px solid var(--accent-green);
+      }
+
+      .footer-nav a {
+        color: var(--text-gray);
+        font-size: 0.9rem;
+      }
+      .footer-nav a:hover {
+        color: var(--accent-green);
+      }
+
+      /* --- RESPONSIVE MEDIA QUERIES --- */
+
+      /* Tablet & Mobile (Max Width: 768px) */
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+        .mobile-menu-btn {
+          display: flex
+        }
+        header {
+          padding: 0 0;
+        }
+        .hero {
+          padding-top: 140px;
+          padding-bottom: 40px;
+        }
+
+        .hero h1 {
+          font-size: 2.2rem;
+          white-space: normal;
+        }
+
+        .hero p {
+          padding: 0 10px;
+        }
+
+        /* Adjust splotches for smaller screens */
+        .hero::before {
+          width: 400px;
+          height: 400px;
+        }
+        .hero::after {
+          width: 300px;
+          height: 300px;
+        }
+
+        /* Tech Stack: Make cards fill 50% width on mobile, 2 columns */
+        .tech-card {
+          flex: 1 1 calc(50% - 12px);
+          max-width: none;
+          min-width: 0;
+        }
+
+        .tech-grid {
+          gap: 15px;
+        }
+
+        /* Projects: Stack vertically */
+        .project-row-container,
+        .project-row-container.reverse {
+          flex-direction: column;
+          gap: 40px;
+          margin-bottom: 60px;
+        }
+
+        .project-content,
+        .project-visual {
+          width: 100%;
+          flex: none;
+        }
+
+        .project-title {
+          font-size: 1.75rem;
+        }
+
+        .project-img-wrapper {
+          min-height: auto;
+        }
+
+        /* Footer: Stack links vertically */
+        .footer-nav {
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 20px;
+          align-items: center;
+          padding-top: 5px;
+        }
+
+        .footer-nav a {
+          width: auto;
+          text-align: center;
+          padding: 5px 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNav">
+      <ul class="mobile-nav-links">
+        <li><a href="#home" onclick="toggleMenu()">Home</a></li>
+        <li><a href="#about" onclick="toggleMenu()">About_Me</a></li>
+        <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
+        <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+      </ul>
+    </div>
+
+    <header>
+      <div class="container">
+        <nav>
+          <div class="logo">&lt; BI-Data-Insight /&gt;</div>
+          <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Me</a></li>
+            <li><a href="#projects">My Projects</a></li>
+            <li><a href="#contact">Contact Me</a></li>
+          </ul>
+          <!-- Mobile Hamburger Button -->
+          <div id="menuBtn" class="mobile-menu-btn" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="home" class="hero">
+        <div class="container">
+          <div class="avatar-container">
+            <img
+              src="https://i.ibb.co/Cpf37KTm/daniel-portfolio.png"
+              alt="Daniel Adebayo"
+            />
+          </div>
+          <!-- ADDED 'typing-text' SPAN AND CURSOR -->
+          <h1>
+            <span id="typing-text"></span><span class="typing-cursor"></span>
+          </h1>
+          <p>
+            A Data Analyst specialized in turning raw data into high
+            impact visual narratives. I combine an engineer’s precision with an
+            analyst’s curiosity to build robust data solutions. My goal is to
+            empower organizations with the clarity they need to lead in a data-first
+            world.
+          </p>
+          <div class="hero-btns">
+            <a href="#projects" class="btn btn-primary">View Projects</a>
+            <button class="btn btn-outline">My CV</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="tech-stack">
+        <div class="container">
+          <div class="section-header">
+            <!-- ADDED 'reveal' CLASS TO HEADER H2 -->
+            <h2 class="reveal">Tech <span>Stack</span></h2>
+          </div>
+          <div class="tech-grid">
+            <!-- ADDED 'reveal' CLASS TO TECH CARDS -->
+            <div class="tech-card reveal">
+              <div class="tech-icon icon-html">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm17.09 4.413L5.41 4.41l.213 2.622 10.125.002-.255 2.716h-6.64l.24 2.573h6.182l-.366 3.523-2.91.804-2.956-.81-.188-2.11h-2.61l.29 3.855L12 19.288l5.373-1.53L18.59 4.414z"
+                  />
+                </svg>
+              </div>
+              <div class="tech-name">HTML</div>
+            </div>
+            <div class="tech-card reveal">
+              <div class="tech-icon icon-css">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm17.09 4.413L5.41 4.41l.213 2.622 10.125.002-.255 2.716h-6.64l.24 2.573h6.182l-.366 3.523-2.91.804-2.956-.81-.188-2.11h-2.61l.29 3.855L12 19.288l5.373-1.53L18.59 4.414z"
+                  />
+                </svg>
+              </div>
+              <div class="tech-name">CSS</div>
+            </div>
+            <div class="tech-card reveal">
+              <div class="tech-icon icon-js">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z"
+                  />
+                </svg>
+              </div>
+              <div class="tech-name">JavaScript</div>
+            </div>
+            <div class="tech-card reveal">
+              <div class="tech-icon icon-react">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M12 13.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z" />
+                  <path
+                    d="M12 21.35c-1.5 0-2.75-.25-3.75-.7-.9-.4-1.4-1-1.6-1.65l-.2-.6.2-.6c.2-.65.7-1.25 1.6-1.65 1-.45 2.25-.7 3.75-.7s2.75.25 3.75.7c.9.4 1.4 1 1.6 1.65l.2.6-.2.6c-.2.65-.7 1.25-1.6 1.65-1 .45-2.25.7-3.75.7Zm0-4c-2.25 0-4.3.5-5.25 1.35.95.85 3 1.35 5.25 1.35s4.3-.5 5.25-1.35c-.95-.85-3-1.35-5.25-1.35ZM3.6 15.75c-.75 0-1.4-.15-1.9-.4-.85-.45-1.25-1.1-1.25-1.85v-.65l.45-.5c.5-.5 1.3-.85 2.3-1 1.1-.15 2.4 0 3.7.45l.6.2-.25.6c-.25.6-.7 1.15-1.3 1.6-.6.45-1.35.7-2.1.7v.65Zm.4-2.9c-.85.15-1.5.45-1.85.8.35.35 1 .65 1.85.8.85.15 1.75.1 2.55-.1.5-.4.85-.85 1-1.35-.9-.25-1.85-.3-2.55-.15Zm16.4 2.9c-.75 0-1.5-.25-2.1-.7-.6-.45-1.05-1-1.3-1.6l-.25-.6.6-.2c1.3-.45 2.6-.6 3.7-.45 1 .15 1.8.5 2.3 1l.45.5v.65c0 .75-.4 1.4-1.25 1.85-.5.25-1.15.4-1.9.4v.65Zm-2.9-2.65c.15.5.5.95 1 1.35.8.2 1.7.25 2.55.1.85-.15 1.5-.45 1.85-.8-.35-.35 1-.65 1.85-.8.8-.15-1.7-.1-2.55.15ZM5.6 9.65c-.75 0-1.5-.25-2.1-.7-.6-.45-1.05-1-1.3-1.6l-.25-.6.6-.2c1.3-.45 2.6-.6 3.7-.45 1 .15 1.8.5 2.3 1l.45.5v.65c0 .75-.4 1.4-1.25 1.85-.5.25-1.15.4-1.9.4v.65Zm2.9-2.65c-.15.5-.5.95-1 1.35-.8.2-1.7.25 2.55.1.85-.15 1.5-.45 1.85-.8-.35-.35 1-.65 1.85-.8.8-.15-1.7-.1-2.55.15ZM12 5.35c-1.5 0-2.75-.25-3.75-.7-.9-.4-1.4-1-1.6-1.65l-.2-.6.2-.6c.2-.65.7-1.25 1.6-1.65 1-.45 2.25-.7 3.75-.7s2.75.25 3.75.7c.9.4 1.4 1 1.6 1.65l.2.6-.2.6c-.2.65-.7 1.25-1.6 1.65-1 .45-2.25.7-3.75.7Zm0-4c-2.25 0-4.3.5-5.25 1.35.95.85 3 1.35 5.25 1.35s4.3-.5 5.25-1.35c-.95-.85-3-1.35-5.25-1.35Z"
+                  />
+                </svg>
+              </div>
+              <div class="tech-name">React</div>
+            </div>
+            <div class="tech-card reveal">
+              <div class="tech-icon icon-ts">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"
+                  />
+                </svg>
+              </div>
+              <div class="tech-name">TypeScript</div>
+            </div>
+            <div class="tech-card reveal">
+              <div class="tech-icon icon-tailwind">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C7.666,17.818,9.027,19.2,12.001,19.2c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"
+                  />
+                </svg>
+              </div>
+              <div class="tech-name">Tailwind</div>
+            </div>
+            <div class="tech-card reveal">
+              <div class="tech-icon icon-git">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.658 2.66c.645-.223 1.387-.078 1.9.435.721.72.721 1.884 0 2.604-.719.719-1.881.719-2.6 0-.539-.541-.674-1.337-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348.713.721.713 1.883 0 2.6-.719.721-1.889.721-2.609 0-.719-.719-.719-1.879 0-2.598.182-.18.387-.316.605-.406V8.835c-.217-.091-.424-.222-.6-.401-.545-.545-.676-1.342-.396-2.009L7.636 3.7.45 10.881c-.6.605-.6 1.584 0 2.189l10.48 10.477c.604.604 1.582.604 2.186 0l10.43-10.43c.605-.603.605-1.582 0-2.187"
+                  />
+                </svg>
+              </div>
+              <div class="tech-name">Git</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="projects">
+        <div class="container">
+          <div class="section-header">
+            <!-- ADDED 'reveal' CLASS TO HEADER H2 -->
+            <h2 class="reveal">Featured <span>Projects</span></h2>
+          </div>
+
+          <div class="project-row reveal">
+            <h3 class="project-title">FashionScribe</h3>
+
+            <div class="project-row-container">
+              <div class="project-visual">
+    <div class="project-img-wrapper">
+        <img src="https://i.ibb.co/HDpgP3v3/dbimage5.png" alt="Test Image" style="width: 100%; height: auto; display: block;">
+    </div>
+</div>
+              <div class="project-content">
+                <p class="project-desc">
+                  A modern skincare blog offering tips, product reviews, and
+                  routines for all skin types.
+                </p>
+                <h4 style="color: var(--accent-green); font-size: 1rem; margin-bottom: 10px;">Summary Description</h4>
+                <ul class="features-list">
+                  <li>Completely Responsive Design</li>
+                  <li>Interactive Animations</li>
+                  <li>Category Filtering (All/Skin Types)</li>
+                </ul>
+                <h4 style="color: var(--accent-green); font-size: 1rem; margin-bottom: 10px;">Tech Stack</h4>
+                <div class="tech-list">
+                  <span class="tech-pill">React</span>
+                  <span class="tech-pill">Tailwind CSS</span>
+                  <span class="tech-pill">Framer Motion</span>
+                </div>
+                <div class="project-actions">
+                  <button class="btn btn-primary">View Live</button>
+                  <button class="btn btn-outline">Repository</button>
+                </div>
+              </div>
+</div>     
+          <div class="project-row reveal">
+            <h3 class="project-title">EventSpace</h3>
+            <div class="project-row-container reverse">
+              <div class="project-visual">
+    <div class="project-img-wrapper">
+        <img src="https://i.ibb.co/FbFLYcW1/dbimage3.png" alt="Test Image" style="width: 100%; height: auto; display: block;">
+    </div>
+    </div>
+              <div class="project-content">
+                <p class="project-desc">
+                  A powerful business dashboard for streamlined management &
+                  data analysis.
+                </p>
+                <h4 style="color: var(--accent-green); font-size: 1rem; margin-bottom: 10px;">Summary Description</h4>
+                <ul class="features-list">
+                  <li>Collapsible Sidebar w/ Theme Support</li>
+                  <li>Real-time Data Visualization</li>
+                  <li>Product & Revenue Tracking</li>
+                </ul>
+                <h4 style="color: var(--accent-green); font-size: 1rem; margin-bottom: 10px;">Tech Stack</h4>
+                <div class="tech-list">
+                  <span class="tech-pill">React</span>
+                  <span class="tech-pill">Chart.js</span>
+                  <span class="tech-pill">Tailwind</span>
+                </div>
+                <div class="project-actions">
+                  <button class="btn btn-primary">View Live</button>
+                  <button class="btn btn-outline">Repository</button>
+                </div>
+              </div>
+              </div>
+    
+                        <div class="project-row reveal">
+            <h3 class="project-title">Marketland</h3>
+
+            <div class="project-row-container">
+              <div class="project-visual">
+    <div class="project-img-wrapper">
+        <img src="https://i.ibb.co/ymgGy6kn/dbimage4.png" alt="Test Image" style="width: 100%; height: auto; display: block;">
+    </div>
+</div>
+              <div class="project-content">
+                <p class="project-desc">
+                  A modern skincare blog offering tips, product reviews, and
+                  routines for all skin types.
+                </p>
+                <h4 style="color: var(--accent-green); font-size: 1rem; margin-bottom: 10px;">Summary Description</h4>
+                <ul class="features-list">
+                  <li>Completely Responsive Design</li>
+                  <li>Interactive Animations</li>
+                  <li>Category Filtering (All/Skin Types)</li>
+                </ul>
+                <h4 style="color: var(--accent-green); font-size: 1rem; margin-bottom: 10px;">Tech Stack</h4>
+                <div class="tech-list">
+                  <span class="tech-pill">React</span>
+                  <span class="tech-pill">Tailwind CSS</span>
+                  <span class="tech-pill">Framer Motion</span>
+                </div>
+                <div class="project-actions">
+                  <button class="btn btn-primary">View Live</button>
+                  <button class="btn btn-outline">Repository</button>
+                </div>
+              </div>
+
+</div>     
+          <div class="project-row reveal">
+            <h3 class="project-title">CryptoDash</h3>
+            <div class="project-row-container reverse">
+              <div class="project-visual">
+    <div class="project-img-wrapper">
+        <img src="https://i.ibb.co/DDYBH7Nm/dbimage1.png" alt="Test Image" style="width: 100%; height: auto; display: block;">
+    </div>
+    </div>
+              <div class="project-content">
+                <p class="project-desc">
+                  A powerful business dashboard for streamlined management &
+                  data analysis.
+                </p>
+                <h4 style="color: var(--accent-green); font-size: 1rem; margin-bottom: 10px;">Summary Description</h4>
+                <ul class="features-list">
+                  <li>Collapsible Sidebar w/ Theme Support</li>
+                  <li>Real-time Data Visualization</li>
+                  <li>Product & Revenue Tracking</li>
+                </ul>
+                <h4 style="color: var(--accent-green); font-size: 1rem; margin-bottom: 10px;">Tech Stack</h4>
+                <div class="tech-list">
+                  <span class="tech-pill">React</span>
+                  <span class="tech-pill">Chart.js</span>
+                  <span class="tech-pill">Tailwind</span>
+                </div>
+                <div class="project-actions">
+                  <button class="btn btn-primary">View Live</button>
+                  <button class="btn btn-outline">Repository</button>
+                </div>
+              </div>
+              </div>  
+</div>  
+</div>        
+      </section>
+    </main>
+
+    <footer id="contact">
+      <div class="container">
+        <div class="social-icons">
+          <a href="#" class="social-icon" aria-label="GitHub">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+              />
+            </svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="LinkedIn">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"
+              />
+            </svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Twitter">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+              />
+            </svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Email">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"
+              />
+            </svg>
+          </a>
+        </div>
+        <div class="copyright">© 2026 Daniel Adebayo.</div>
+        <div class="footer-nav">
+          <a href="#">Home</a>
+          <a href="#">About</a>
+          <a href="#">Projects</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- SCROLL REVEAL & TYPEWRITER JAVASCRIPT -->
+    <script>
+      // Mobile Menu Function (Existing)
+      function toggleMenu() {
+      // 1. Toggle the Menu Sidebar
+      const nav = document.getElementById('mobileNav');
+      nav.classList.toggle('active');
+
+      // 2. Toggle the Hamburger Button Animation
+      const btn = document.getElementById('menuBtn');
+      btn.classList.toggle('open');
+      }
+
+      // --- TYPEWRITER EFFECT LOGIC ---
+      const textToType = "Hi, I'm Daniel Adebayo";
+      const typeWriterElement = document.getElementById("typing-text");
+
+      function typeWriter(i) {
+        if (i < textToType.length) {
+          // 1. Add next character to text
+          typeWriterElement.innerHTML += textToType.charAt(i);
+
+          // 2. Set a random delay between 50ms and 150ms for realism
+          // (Math.random() makes typing speed uneven, like a human)
+          const typeSpeed = Math.floor(Math.random() * 100) + 50;
+
+          setTimeout(() => typeWriter(i + 1), typeSpeed);
+        }
+      }
+
+      // --- OPTION 2: SCROLL REVEAL LOGIC (Existing) ---
+      document.addEventListener("DOMContentLoaded", () => {
+        // START TYPEWRITER IMMEDIATELY
+        typeWriter(0);
+
+        const observerOptions = {
+          threshold: 0.15, // Trigger when 15% of element is visible
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // Add only 'active' class (Reveal class is now in HTML)
+              entry.target.classList.add("active");
+
+              // Stop observing once revealed (animation only runs once)
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        // Select all elements we want to animate
+        // Targets: Section Headers, Tech Stack Cards, Project Rows
+        const revealElements = document.querySelectorAll(".reveal");
+
+        // Observe each element
+        revealElements.forEach((el) => observer.observe(el));
+      });
+    </script>
+  </body>
+</html>
