@@ -20,7 +20,7 @@
         --text-gray: #94a3b8;
         --text-green: #10b981;
         --accent-blue: #38bdf8; /* Sky Blue */
-        --accent-green: #00c950;
+        --accent-green: #00db65;
         --accent-hover: #059669;
         --border-color: rgba(255, 255, 255, 0.1);
 
@@ -110,7 +110,7 @@
 
       .nav-links a {
         color: var(--text-gray);
-        font-size: 0.9rem;
+        font-size: 1.0rem;
         font-weight: 500;
 
         /* REQUIRED FOR THE UNDERLINE ANIMATION */
@@ -136,7 +136,7 @@
 
       /* HOVER STATE */
       .nav-links a:hover {
-        color: var(--accent-green); /* Text becomes blue */
+        color: var(--accent-green);
       }
 
       /* END STATE: Visible (Width scaled to 1) */
@@ -360,7 +360,8 @@
         color: var(--bg-dark);
       }
       .btn-primary:hover {
-        background-color: var(--accent-green);
+        background-color: var(--accent-hover);
+        color: var(--text-light);
         transform: scale(1.05);
       }
 
@@ -370,9 +371,9 @@
         color: var(--text-light);
       }
       .btn-outline:hover {
-        background-color: var(--accent-green);
-        border-color: var(--accent-green);
-        color: var(--bg-dark);
+        background-color: var(--accent-hover);
+        border-color: var(--accent-hover);
+        color: var(--text-light);
         transform: scale(1.05);
       }
 
@@ -429,7 +430,7 @@
         z-index: 10;
       }
       .section-header h2 {
-        font-size: 2rem;
+        font-size: 2.25rem;
         font-weight: 700;
       }
       .section-header span {
@@ -723,7 +724,7 @@
         .project-row-container,
         .project-row-container.reverse {
           flex-direction: column;
-          gap: 40px;
+          gap: 35px;
           margin-bottom: 60px;
         }
 
